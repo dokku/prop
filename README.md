@@ -87,101 +87,101 @@ prop config set backend postgres://user:password@host:port/database
 prop config del backend
 ```
 
-#### `key-value` commands
+### `key-value` commands
 
-##### `get key [default]`
+#### `get key [default]`
 
 - Description: Get the value of a key
 - Data Type: `key-value`
 - Supported Flags: `--namespace`
 
-##### `get-all [prefix]`
+#### `get-all [prefix]`
 
 - Description: Get all key-value tuples
 - Data Type: `[(key-value tuple)]`
 - Supported Flags: `--namespace`
 
-##### `set key`
+#### `set key`
 
 - Description: Set the string value of a key
 - Data Type: `key-value`
 - Supported Flags: `--namespace`
 
-#### `list` commands
+### `list` commands
 
-##### `lindex key index`
+#### `lindex key index`
 
 - Description: Get an element from a list by its index
 - Data Type: `list`
 - Supported Flags: `--namespace`
 
-##### `lismember key element`
+#### `lismember key element`
 
 - Description: Determine if a given value is an element in the list
 - Data Type: `list`
 - Supported Flags: `--namespace`
 
-##### `llen key`
+#### `llen key`
 
 - Description: Get the length of a list
 - Data Type: `list`
 - Supported Flags: `--namespace`
 
-##### `lrange key [start [stop]]`
+#### `lrange key [start [stop]]`
 
 - Description: Get a range of elements from a list
 - Data Type: `list`
 - Supported Flags: `--namespace`
 
-##### `lrem key count element`
+#### `lrem key count element`
 
 - Description: Remove elements from a list
 - Data Type: `list`
 - Supported Flags: `--namespace`
 
-##### `lset key index element`
+#### `lset key index element`
 
 - Description: Set the value of an element in a list by its index
 - Data Type: `list`
 - Supported Flags: `--namespace`
 
-##### `rpush key element`
+#### `rpush key element`
 
 - Description: Append one or more members to a list
 - Data Type: `list`
 - Supported Flags: `--namespace`
 
-#### `set` commands
+### `set` commands
 
-##### `sadd key member [member ..]`
+#### `sadd key member [member ..]`
 
 - Description: Add one or more members to a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
 
-##### `sismember key member`
+#### `sismember key member`
 
 - Description: Determine if a given value is a member of a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
 
-##### `smembers key`
+#### `smembers key`
 
 - Description: Get all the members in a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
 
-##### `srem key member [member ...]`
+#### `srem key member [member ...]`
 
 - Description: Remove one or more members from a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
 
-### Backends
+## Backends
 
 The following backends are supported.
 
-#### File
+### File
 
 To configure, run:
 
@@ -202,7 +202,7 @@ When querying for a property, there is no guarantee that the value will be of th
 
 > For consideration: Should we serialize the value into json, such that we have something like: `{"type": "[key-value,list,set]" "value": "value here"}`? This would allow the interface to introspect on the type correctly, though at the cost of complicating the backend a bit more.
 
-#### Redis
+### Redis
 
 To configure, run:
 
@@ -216,7 +216,7 @@ When querying for a property, if the type of the value does not match the type s
 
 Namespaces are implemented via key prefixes, with the namespace being prepended to the key name with the delimiter `:`. For instance, a key name of `bar` with a namespace of `foo` would be written as `foo:bar`.
 
-#### Postgres
+### Postgres
 
 To configure, run:
 
