@@ -46,6 +46,18 @@ Values may contain 0 or more utf8 characters and may be a maximum of 65535 chara
 
 The following commands are supported.
 
+### `backend` commands
+
+#### `backend migrate backend_dsn`
+
+- Description: Migrate from one backend to another
+
+When migrating a backend, it is assumed that there are is no concurrent access to the backend. In other words, if another process is changing values of either backend, then the migration may result in an invalid state.
+
+#### `backend reset`
+
+- Description: Clear all values in a backend
+
 ### `del key`
 
 - Description: Delete a key
@@ -84,6 +96,16 @@ prop config set backend postgres://user:password@host:port/database
 ```
 prop config del backend
 ```
+
+### `namespace` commands
+
+#### `namespace exists namespace`
+
+- Description: Checks if there are any keys in a given namespace
+
+#### `namespace clear namespace`
+
+- Description: Delete all keys from a given namespace
 
 ### `key-value` commands
 
