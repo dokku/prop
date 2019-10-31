@@ -151,3 +151,19 @@ Current configuration values that may be set:
 - Description: Remove one or more members from a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
+
+### Backends
+
+The following backends are supported.
+
+#### File
+
+```shell
+prop config set backend file:///etc/prop.d
+```
+
+#### Postgres
+
+```shell
+prop config set backend postgres://user:password@host:port/database
+```
