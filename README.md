@@ -158,12 +158,54 @@ The following backends are supported.
 
 #### File
 
+To configure, run:
+
 ```shell
 prop config set backend file:///etc/prop.d
 ```
 
+The directory structure is as follows:
+
+```shell
+# returns the contents of the file
+cat $NAMESPACE/$KEY
+```
+
+When querying for a property, there is no guarantee that the value will be of the type expected. As such, users should take care to always interact with a given key using the correct commands.
+
+> For consideration: Should we serialize the value into json, such that we have something like: `{"type": "[key-value,list,set]" "value": "value here"}`? This would allow the interface to introspect on the type correctly, though at the cost of complicating the backend a bit more.
+
 #### Postgres
+
+To configure, run:
 
 ```shell
 prop config set backend postgres://user:password@host:port/database
 ```
+
+The following is the SQL schema:
+
+```
+CREATE TYPE "data_types" AS ENUM (
+  'key_value',
+  'list',
+  'set'
+);
+
+CREATE TABLE "properties" (
+  "id" SERIAL PRIMARY KEY,
+  "namespace" varchar NOT NULL DEFAULT 'default',
+  "data_type" data_types NOT NULL,
+  "key" varchar NOT NULL,
+  "value" text NOT NULL,
+  "created_at" timestamp
+);
+
+CREATE INDEX "namespace_by_data_type" ON "properties" ("namespace", "data_type");
+
+CREATE INDEX "namespace_by_key" ON "properties" ("namespace", "key");
+
+CREATE UNIQUE INDEX ON "properties" ("id");
+```
+
+When querying for a property, the type of the command should be compared to the type of the retrieved record. If they do not match, then the command should return an error.
