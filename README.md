@@ -32,6 +32,16 @@ The following data types are implemented within the `prop` tool:
 - lists
 - key-value
 
+## Key and Value specification
+
+Keys may follow the following regex:
+
+```
+[\w-/]{1,200}[^/]
+```
+
+Values may contain 0 or more utf8 characters and may be a maximum of 65535 characters in length.
+
 ## Commands
 
 The following commands are supported.
@@ -171,6 +181,8 @@ The directory structure is as follows:
 cat $NAMESPACE/$KEY
 ```
 
+Key names can include forward slashes, which will be interpreted as a directory structure.
+
 When querying for a property, there is no guarantee that the value will be of the type expected. As such, users should take care to always interact with a given key using the correct commands.
 
 > For consideration: Should we serialize the value into json, such that we have something like: `{"type": "[key-value,list,set]" "value": "value here"}`? This would allow the interface to introspect on the type correctly, though at the cost of complicating the backend a bit more.
@@ -221,5 +233,11 @@ CREATE INDEX "namespace_by_key" ON "properties" ("namespace", "key");
 
 CREATE UNIQUE INDEX ON "properties" ("id");
 ```
+
+The encoding should be as follows:
+
+- encoding: `pg_char_to_encoding('utf8')`
+- datcollate: `en_US.utf8`
+- datctype: `en_US.utf8`
 
 When querying for a property, the type of the command should be compared to the type of the retrieved record. If they do not match, then the command should return an error.
