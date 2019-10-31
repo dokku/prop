@@ -46,13 +46,11 @@ Values may contain 0 or more utf8 characters and may be a maximum of 65535 chara
 
 The following commands are supported.
 
-
 ### `del key`
 
 - Description: Delete a key
 - Data Type: `key-value`, `list`, `set`
 - Supported Flags: `--namespace`
-
 
 ### `config` commands
 
