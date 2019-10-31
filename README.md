@@ -32,6 +32,25 @@ The following data types are implemented within the `prop` tool:
 - lists
 - key-value
 
+Inside of `prop`, a bit of data is called a `Property` consists of the following interface:
+
+```go
+struct Property {
+  DataType  string
+  Namespace string
+  Key       string
+  Value     string
+}
+```
+
+A set of data is called a `PropertyCollection`. A `PropertyCollection` can be imported/exported from one backend to another.
+
+```go
+struct PropertyCollection {
+   Properties []Property
+}
+```
+
 ## Key and Value specification
 
 Keys may follow the following regex:
@@ -51,12 +70,15 @@ The following commands are supported.
 #### `backend migrate backend_dsn`
 
 - Description: Migrate from one backend to another
+- Interface: `BackendExport() (BackendData{} bool, err error)`
+- Interface: `BackendImport() (BackendData{} bool, err error)`
 
 When migrating a backend, it is assumed that there are is no concurrent access to the backend. In other words, if another process is changing values of either backend, then the migration may result in an invalid state.
 
 #### `backend reset`
 
 - Description: Clear all values in a backend
+- Interface: `BackendClear() (success bool, err error)`
 
 ### `config` commands
 
@@ -96,16 +118,19 @@ prop config del backend
 - Description: Delete a key
 - Data Type: `key-value`, `list`, `set`
 - Supported Flags: `--namespace`
+- Interface: `Del(key string) (success bool, err error)`
 
 ### `namespace` commands
 
 #### `namespace exists namespace`
 
 - Description: Checks if there are any keys in a given namespace
+- Interface: `NamespaceExists(namespace string) (exists bool, err error)`
 
 #### `namespace clear namespace`
 
 - Description: Delete all keys from a given namespace
+- Interface: `NamespaceClear(namespace string) (success bool, err error)`
 
 ### `key-value` commands
 
@@ -114,18 +139,22 @@ prop config del backend
 - Description: Get the value of a key
 - Data Type: `key-value`
 - Supported Flags: `--namespace`
+- Interface: `Get(key string) (value string, err error)`
 
 #### `get-all [prefix]`
 
 - Description: Get all key-value tuples
 - Data Type: `[(key-value tuple)]`
 - Supported Flags: `--namespace`
+- Interface: `GetAll() (map[string]string...string, err error)`
+- Interface: `GetAllByPrefix(prefix string) (map[string]string...string, err error)`
 
-#### `set key`
+#### `set key value`
 
 - Description: Set the string value of a key
 - Data Type: `key-value`
 - Supported Flags: `--namespace`
+- Interface: `Set(key string, value string) (success bool, err error)`
 
 ### `list` commands
 
@@ -134,42 +163,51 @@ prop config del backend
 - Description: Get an element from a list by its index
 - Data Type: `list`
 - Supported Flags: `--namespace`
+- Interface: `Lindex(key string, index int) (element string, err error)`
 
 #### `lismember key element`
 
 - Description: Determine if a given value is an element in the list
 - Data Type: `list`
 - Supported Flags: `--namespace`
+- Interface: `Lismember(key string, element string) (ismember bool, err error)`
 
 #### `llen key`
 
 - Description: Get the length of a list
 - Data Type: `list`
 - Supported Flags: `--namespace`
+- Interface: `Llen(key string) (length int, err error)`
 
 #### `lrange key [start [stop]]`
 
 - Description: Get a range of elements from a list
 - Data Type: `list`
 - Supported Flags: `--namespace`
+- Interface: `Lrange(key string) (element...string, err error)`
+- Interface: `Lrangefrom(key string, start int) (element...string, err error)`
+- Interface: `Lrangefromto(key string, start int, stop int) (element...string, err error)`
 
 #### `lrem key count element`
 
 - Description: Remove elements from a list
 - Data Type: `list`
 - Supported Flags: `--namespace`
+- Interface: `Lrem(key string, count_to_remove int, element string) (removed_count int, err error)`
 
 #### `lset key index element`
 
 - Description: Set the value of an element in a list by its index
 - Data Type: `list`
 - Supported Flags: `--namespace`
+- Interface: `Lset(key string, index int, element string) (success bool, err error)`
 
 #### `rpush key element`
 
 - Description: Append one or more members to a list
 - Data Type: `list`
 - Supported Flags: `--namespace`
+- Interface: `Rpush(key string, element...string) (list_length int, err error)`
 
 ### `set` commands
 
@@ -178,26 +216,32 @@ prop config del backend
 - Description: Add one or more members to a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
+- Interface: `Sadd(key string, member...string) (added_count int, err error)`
 
 #### `sismember key member`
 
 - Description: Determine if a given value is a member of a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
+- Interface: `Sismember(key string, member string) (ismember bool, err error)`
 
 #### `smembers key`
 
 - Description: Get all the members in a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
+- Interface: `Smembers(key string) (member...string, err error)`
 
 #### `srem key member [member ...]`
 
 - Description: Remove one or more members from a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
+- Interface: `Srem(key string, member...string) (removed_count int, err error)`
 
 ## Backends
+
+Backends should implement the method signatures specified for each command.
 
 The following backends are supported.
 
