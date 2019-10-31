@@ -67,13 +67,29 @@ The following commands are supported.
 
 ### `backend` commands
 
+#### `backend export path/to/file`
+
+- Description: Exports a backend to a json file
+- Interface: `BackendExport() (BackendCollection{} bool, err error)`
+
+When export a backend, it is assumed that there are is no concurrent access to the backend. In other words, if another process is changing values of the backend, then the export may result in an invalid state.
+
+#### `backend import path/to/file`
+
+- Description: Import a backend to a json file
+- Interface: `BackendImport() (BackendCollection{} bool, err error)`
+- Flags: `--clear`
+
+When importing a backend, properties are merged into the existing backend unless the `--clear` flag is specified.
+
+When migrating a backend, it is assumed that there are is no concurrent access to the backend. In other words, if another process is changing values of the backend, then the import may result in an invalid state.
+
 #### `backend migrate backend_dsn`
 
 - Description: Migrate from one backend to another
-- Interface: `BackendExport() (BackendData{} bool, err error)`
-- Interface: `BackendImport() (BackendData{} bool, err error)`
 
 When migrating a backend, it is assumed that there are is no concurrent access to the backend. In other words, if another process is changing values of either backend, then the migration may result in an invalid state.
+
 
 #### `backend reset`
 
