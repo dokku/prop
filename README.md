@@ -58,12 +58,6 @@ When migrating a backend, it is assumed that there are is no concurrent access t
 
 - Description: Clear all values in a backend
 
-### `del key`
-
-- Description: Delete a key
-- Data Type: `key-value`, `list`, `set`
-- Supported Flags: `--namespace`
-
 ### `config` commands
 
 Used for configuring `prop`.
@@ -96,6 +90,12 @@ prop config set backend postgres://user:password@host:port/database
 ```
 prop config del backend
 ```
+
+### `del key`
+
+- Description: Delete a key
+- Data Type: `key-value`, `list`, `set`
+- Supported Flags: `--namespace`
 
 ### `namespace` commands
 
