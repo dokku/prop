@@ -104,15 +104,25 @@ Used for configuring `prop`.
 
 Current configuration values that may be manipulated:
 
-- `backend`: (type: string, default: `file:///etc/prop.d`) A configured backend for prop, specified in [DSN](https://en.wikipedia.org/wiki/Data_source_name) form. Backends are built into the prop project. Currently supported backends are `file` and `postgres`
-- `namespace`: (type: string, default: `default`) The default namespace. Commands that allow namespace usage will note as such.
+- `backend_url`:
+  - Type: string
+  - Default: `file:///etc/prop.d`
+  - environment Variable: `PROP_BACKEND_URL`
+  - Description: A configured backend for prop, specified in [DSN](https://en.wikipedia.org/wiki/Data_source_name) form. Backends are built into the prop project. Currently supported backends are `file` and `postgres`
+- `namespace`:
+  - Type: string
+  - Default: `default`
+  - Environment Variable: `PROP_NAMESPACE`
+  - Description:The default namespace. Commands that allow namespace usage will note as such.
+
+All properties may be specified as environment variables. The `config.json` holding the config will only be read if any of the environment variables 
 
 #### `config get key`
 
 - Description: Get a configuration value
 
 ```shell
-prop config get backend
+prop config get backend_url
 ```
 
 #### `config set key value`
@@ -120,7 +130,7 @@ prop config get backend
 - Description: Set a configuration value
 
 ```shell
-prop config set backend postgres://user:password@host:port/database
+prop config set backend_url postgres://user:password@host:port/database
 ```
 
 #### `config del key`
@@ -128,7 +138,7 @@ prop config set backend postgres://user:password@host:port/database
 - Description: Delete a configuration value
 
 ```
-prop config del backend
+prop config del backend_url
 ```
 
 ### `del key`
@@ -273,7 +283,7 @@ The following backends are supported.
 To configure, run:
 
 ```shell
-prop config set backend file:///etc/prop.d
+prop config set backend_url file:///etc/prop.d
 ```
 
 The directory structure is as follows:
@@ -301,7 +311,7 @@ When querying for a property, if the type of the value does not match the type s
 To configure, run:
 
 ```shell
-prop config set backend redis://user:password@host:port/database
+prop config set backend_url redis://user:password@host:port/database
 ```
 
 With the redis backend, commands map to their redis equivalents where appropriate. If there is no equivalent redis command, a redis script may be used instead to implement the functionality.
@@ -315,7 +325,7 @@ Namespaces are implemented via key prefixes, with the namespace being prepended 
 To configure, run:
 
 ```shell
-prop config set backend postgres://user:password@host:port/database
+prop config set backend_url postgres://user:password@host:port/database
 ```
 
 The following is the SQL schema:
