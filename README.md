@@ -84,11 +84,14 @@ When importing a backend, properties are merged into the existing backend unless
 
 When migrating a backend, it is assumed that there are is no concurrent access to the backend. In other words, if another process is changing values of the backend, then the import may result in an invalid state.
 
-#### `backend migrate backend_dsn`
+#### `backend migrate target_backend_dsn`
 
 - Description: Migrate from one backend to another
+- Flags: `--clear`
 
-When migrating a backend, it is assumed that there are is no concurrent access to the backend. In other words, if another process is changing values of either backend, then the migration may result in an invalid state.
+When migrating a backend, properties are merged into the target backend unless the `--clear` flag is specified.
+
+When migrating a backend, it is assumed that there are is no concurrent access to either backend. In other words, if another process is changing values of either backend, then the migration may result in an invalid state.
 
 #### `backend reset`
 
