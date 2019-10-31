@@ -175,6 +175,20 @@ When querying for a property, there is no guarantee that the value will be of th
 
 > For consideration: Should we serialize the value into json, such that we have something like: `{"type": "[key-value,list,set]" "value": "value here"}`? This would allow the interface to introspect on the type correctly, though at the cost of complicating the backend a bit more.
 
+#### Redis
+
+To configure, run:
+
+```shell
+prop config set backend redis://user:password@host:port/database
+```
+
+With the redis backend, commands map to their redis equivalents where appropriate. If there is no equivalent redis command, a redis script may be used instead to implement the functionality.
+
+When querying for a property, if the type of the value does not match the type specified by the executed command, an error should be raised where possible.
+
+Namespaces are implemented via key prefixes, with the namespace being prepended to the key name with the delimiter `:`. For instance, a key name of `bar` with a namespace of `foo` would be written as `foo:bar`.
+
 #### Postgres
 
 To configure, run:
