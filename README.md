@@ -46,31 +46,46 @@ Values may contain 0 or more utf8 characters and may be a maximum of 65535 chara
 
 The following commands are supported.
 
-### `config`
 
-Can be used to configure various components of prop.
-
-```shell
-# getting a value
-prop config get backend
-
-# setting a value
-prop config set backend postgres://user:password@host:port/database
-
-# clearing the configured value
-prop config del backend
-```
-
-Current configuration values that may be set:
-
-- `backend`: (type: string, default: `file:///etc/prop.d`) A configured backend for prop, specified in [DSN](https://en.wikipedia.org/wiki/Data_source_name) form. Backends are built into the prop project. Currently supported backends are `file` and `postgres`
-- `namespace`: (type: string, default: `default`) The default namespace. Commands that allow namespace usage will note as such.
-
-#### `del key`
+### `del key`
 
 - Description: Delete a key
 - Data Type: `key-value`, `list`, `set`
 - Supported Flags: `--namespace`
+
+
+### `config` commands
+
+Used for configuring `prop`.
+
+Current configuration values that may be manipulated:
+
+- `backend`: (type: string, default: `file:///etc/prop.d`) A configured backend for prop, specified in [DSN](https://en.wikipedia.org/wiki/Data_source_name) form. Backends are built into the prop project. Currently supported backends are `file` and `postgres`
+- `namespace`: (type: string, default: `default`) The default namespace. Commands that allow namespace usage will note as such.
+
+#### `config get key`
+
+- Description: Get a configuration value
+
+```shell
+prop config get backend
+```
+
+#### `config set key value`
+
+- Description: Set a configuration value
+
+```shell
+prop config set backend postgres://user:password@host:port/database
+```
+
+#### `config del key`
+
+- Description: Delete a configuration value
+
+```
+prop config del backend
+```
 
 #### `key-value` commands
 
