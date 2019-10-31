@@ -218,9 +218,16 @@ cat $NAMESPACE/$KEY
 
 Key names can include forward slashes, which will be interpreted as a directory structure.
 
-When querying for a property, there is no guarantee that the value will be of the type expected. As such, users should take care to always interact with a given key using the correct commands.
+Values are stored in the following json format:
 
-> For consideration: Should we serialize the value into json, such that we have something like: `{"type": "[key-value,list,set]" "value": "value here"}`? This would allow the interface to introspect on the type correctly, though at the cost of complicating the backend a bit more.
+```json
+{
+   "type": "$data_type",
+   "value": "$value"
+}
+```
+
+When querying for a property, if the type of the value does not match the type specified by the executed command, an error should be raised where possible.
 
 ### Redis
 
