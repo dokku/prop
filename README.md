@@ -15,7 +15,7 @@ This project seeks to make it easy to manipulate various basic data types across
 ## Terminology
 
 - Set: A mathematical, well-defined collection of distinct objects. See [wikipedia](https://en.wikipedia.org/wiki/Set_(mathematics)) for more details.
-- List: An enumerated collection of objects in which repititions are allowed. See [wikipedia](https://en.wikipedia.org/wiki/Sequence) for more details.
+- List: An enumerated collection of objects in which repititions are allowed. See [wikipedia](https://en.wikipedia.org/wiki/Sequence) for more details. Lists are zero-indexed.
 - Key-Value: A 2-tuple collection of data, addressable by the key name. See [wikipedia](https://en.wikipedia.org/wiki/Attribute–value_pair) for more details.
 - Namespace: A distinct collection of symbols that are related to each other. All identifiers within a namespace are unique. See [wikipedia](https://en.wikipedia.org/wiki/Namespace) for more details.
 - Backend: A data-access layer that can contain configuration state.
@@ -141,13 +141,6 @@ prop config set backend_url postgres://user:password@host:port/database
 prop config del backend_url
 ```
 
-### `del key`
-
-- Description: Delete a key
-- Data Type: `key-value`, `list`, `set`
-- Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) Del(key string) (success bool, err error)`
-
 ### `namespace` commands
 
 #### `namespace exists namespace`
@@ -161,6 +154,20 @@ prop config del backend_url
 - Method Signature: `func (b Backend) NamespaceClear(namespace string) (success bool, err error)`
 
 ### `key-value` commands
+
+### `del key`
+
+- Description: Delete a key
+- Data Type: `key-value`, `list`, `set`
+- Supported Flags: `--namespace`
+- Method Signature: `func (b Backend) Del(key string) (success bool, err error)`
+
+### `exists key`
+
+- Description: Check if a exists
+- Data Type: `key-value`, `list`, `set`
+- Supported Flags: `--namespace`
+- Method Signature: `func (b Backend) Exists(key string) (exists bool, err error)`
 
 #### `get key [default]`
 
@@ -198,7 +205,7 @@ prop config del backend_url
 - Description: Determine if a given value is an element in the list
 - Data Type: `list`
 - Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) Lismember(key string, element string) (ismember bool, err error)`
+- Method Signature: `func (b Backend) Lismember(key string, element string) (isMember bool, err error)`
 
 #### `llen key`
 
@@ -209,7 +216,7 @@ prop config del backend_url
 
 #### `lrange key [start [stop]]`
 
-- Description: Get a range of elements from a list
+- Description: Get a range of elements from a list.
 - Data Type: `list`
 - Supported Flags: `--namespace`
 - Method Signature: `func (b Backend) Lrange(key string) ([]string, err error)`
@@ -221,7 +228,7 @@ prop config del backend_url
 - Description: Remove elements from a list
 - Data Type: `list`
 - Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) Lrem(key string, count_to_remove int, element string) (removed_count int, err error)`
+- Method Signature: `func (b Backend) Lrem(key string, countToRemove int, element string) (removedCount int, err error)`
 
 #### `lset key index element`
 
@@ -230,12 +237,12 @@ prop config del backend_url
 - Supported Flags: `--namespace`
 - IntMethod Signatureerface: `func (b Backend) Lset(key string, index int, element string) (success bool, err error)`
 
-#### `rpush key element`
+#### `rpush key element [element...]`
 
 - Description: Append one or more members to a list
 - Data Type: `list`
 - Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) Rpush(key string, element ...string) (list_length int, err error)`
+- Method Signature: `func (b Backend) Rpush(key string, newElements ...string) (listLength int, err error)`
 
 ### `set` commands
 
@@ -244,14 +251,14 @@ prop config del backend_url
 - Description: Add one or more members to a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) Sadd(key string, member ...string) (added_count int, err error)`
+- Method Signature: `func (b Backend) Sadd(key string, member ...string) (addedCount int, err error)`
 
 #### `sismember key member`
 
 - Description: Determine if a given value is a member of a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) Sismember(key string, member string) (ismember bool, err error)`
+- Method Signature: `func (b Backend) Sismember(key string, member string) (isMember bool, err error)`
 
 #### `smembers key`
 
@@ -265,7 +272,7 @@ prop config del backend_url
 - Description: Remove one or more members from a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) Srem(key string, member...string) (removed_count int, err error)`
+- Method Signature: `func (b Backend) Srem(key string, member...string) (removedCount int, err error)`
 
 ## Backends
 
