@@ -35,7 +35,7 @@ The following data types are implemented within the `prop` tool:
 Inside of `prop`, a bit of data is called a `Property` consists of the following interface:
 
 ```go
-struct Property {
+type Property struct {
   DataType  string
   Namespace string
   Key       string
@@ -46,7 +46,7 @@ struct Property {
 A set of data is called a `PropertyCollection`. A `PropertyCollection` can be imported/exported from one backend to another.
 
 ```go
-struct PropertyCollection {
+type PropertyCollection struct {
    Properties []Property
 }
 ```
@@ -70,14 +70,14 @@ The following commands are supported.
 #### `backend export path/to/file`
 
 - Description: Exports a backend to a json file
-- Method Signature: `func (b Backend) BackendExport() (BackendCollection{} bool, err error)`
+- Method Signature: `func (b Backend) BackendExport() (p PropertyCollection, exported bool, err error)`
 
 When export a backend, it is assumed that there are is no concurrent access to the backend. In other words, if another process is changing values of the backend, then the export may result in an invalid state.
 
 #### `backend import path/to/file`
 
 - Description: Import a backend to a json file
-- Method Signature: `func (b Backend) BackendImport(clear bool) (BackendCollection{} bool, err error)`
+- Method Signature: `func (b Backend) BackendImport(clear bool) (p PropertyCollection, imported bool, err error)`
 - Flags: `--clear`
 
 When importing a backend, properties are merged into the existing backend unless the `--clear` flag is specified.
@@ -113,9 +113,9 @@ Current configuration values that may be manipulated:
   - Type: string
   - Default: `default`
   - Environment Variable: `PROP_NAMESPACE`
-  - Description:The default namespace. Commands that allow namespace usage will note as such.
+  - Description: The default namespace. Commands that allow namespace usage will note as such.
 
-All properties may be specified as environment variables. The `config.json` holding the config will only be read if any of the environment variables 
+All properties may be specified as environment variables. The `config.json` holding the config will only be read if any of the environment variables are missing.
 
 #### `config get key`
 
@@ -174,8 +174,8 @@ prop config del backend_url
 - Description: Get all key-value tuples
 - Data Type: `[(key-value tuple)]`
 - Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) GetAll() (map[string]string...string, err error)`
-- Method Signature: `func (b Backend) GetAllByPrefix(prefix string) (map[string]string...string, err error)`
+- Method Signature: `func (b Backend) GetAll() (keyValuePairs []map[string]string, err error)`
+- Method Signature: `func (b Backend) GetAllByPrefix(prefix string) (keyValuePairs []map[string]string, err error)`
 
 #### `set key value`
 
@@ -212,9 +212,9 @@ prop config del backend_url
 - Description: Get a range of elements from a list
 - Data Type: `list`
 - Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) Lrange(key string) (element...string, err error)`
-- Method Signature: `func (b Backend) Lrangefrom(key string, start int) (element...string, err error)`
-- Method Signature: `func (b Backend) Lrangefromto(key string, start int, stop int) (element...string, err error)`
+- Method Signature: `func (b Backend) Lrange(key string) ([]string, err error)`
+- Method Signature: `func (b Backend) Lrangefrom(key string, start int) ([]string, err error)`
+- Method Signature: `func (b Backend) Lrangefromto(key string, start int, stop int) ([]string, err error)`
 
 #### `lrem key count element`
 
@@ -235,7 +235,7 @@ prop config del backend_url
 - Description: Append one or more members to a list
 - Data Type: `list`
 - Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) Rpush(key string, element...string) (list_length int, err error)`
+- Method Signature: `func (b Backend) Rpush(key string, element ...string) (list_length int, err error)`
 
 ### `set` commands
 
@@ -244,7 +244,7 @@ prop config del backend_url
 - Description: Add one or more members to a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) Sadd(key string, member...string) (added_count int, err error)`
+- Method Signature: `func (b Backend) Sadd(key string, member ...string) (added_count int, err error)`
 
 #### `sismember key member`
 
@@ -258,7 +258,7 @@ prop config del backend_url
 - Description: Get all the members in a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) Smembers(key string) (member...string, err error)`
+- Method Signature: `func (b Backend) Smembers(key string) (member []string, err error)`
 
 #### `srem key member [member ...]`
 
