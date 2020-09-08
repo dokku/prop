@@ -43,7 +43,7 @@ func ConstructBackend(url string, namespace string) (Backend, error) {
 	}
 
 	if u.Scheme == "file" {
-		return NewFileBackend(namespace, u)
+		return NewUnstructuredFileBackend(namespace, u)
 	}
 
 	return NewUnimplementedBackend()

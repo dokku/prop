@@ -13,18 +13,18 @@ import (
 	"github.com/xo/dburl"
 )
 
-type FileBackend struct {
+type UnstructuredFileBackend struct {
 	NamespaceRoot string
 	Namespace     string
 	SystemUser    string
 	SystemGroup   string
 }
 
-// NewFileBackend create new instance of FileBackend
-func NewFileBackend(namespace string, url *dburl.URL) (FileBackend, error) {
+// NewUnstructuredFileBackend create new instance of UnstructuredFileBackend
+func NewUnstructuredFileBackend(namespace string, url *dburl.URL) (UnstructuredFileBackend, error) {
 	systemUser := url.Query().Get("system-user")
 	systemGroup := url.Query().Get("system-group")
-	backend := FileBackend{}
+	backend := UnstructuredFileBackend{}
 	backend.NamespaceRoot = path.Join(url.Opaque, namespace)
 	backend.Namespace = namespace
 	backend.SystemUser = systemUser
@@ -32,19 +32,19 @@ func NewFileBackend(namespace string, url *dburl.URL) (FileBackend, error) {
 	return backend, nil
 }
 
-func (backend FileBackend) BackendExport() (PropertyCollection, bool, error) {
+func (backend UnstructuredFileBackend) BackendExport() (PropertyCollection, bool, error) {
 	return PropertyCollection{}, false, fmt.Errorf("Not implemented")
 }
 
-func (backend FileBackend) BackendImport(clear bool) (PropertyCollection, bool, error) {
+func (backend UnstructuredFileBackend) BackendImport(clear bool) (PropertyCollection, bool, error) {
 	return PropertyCollection{}, false, fmt.Errorf("Not implemented")
 }
 
-func (backend FileBackend) BackendClear() (bool, error) {
+func (backend UnstructuredFileBackend) BackendClear() (bool, error) {
 	return false, fmt.Errorf("Not implemented")
 }
 
-func (backend FileBackend) Del(key string) (bool, error) {
+func (backend UnstructuredFileBackend) Del(key string) (bool, error) {
 	keyPath := backend.getKeyPath(key)
 	if err := os.Remove(keyPath); err != nil {
 		if exists, _ := backend.Exists(key); !exists {
@@ -57,7 +57,7 @@ func (backend FileBackend) Del(key string) (bool, error) {
 	return true, nil
 }
 
-func (backend FileBackend) Exists(key string) (bool, error) {
+func (backend UnstructuredFileBackend) Exists(key string) (bool, error) {
 	keyPath := backend.getKeyPath(key)
 	_, err := os.Stat(keyPath)
 	if err != nil {
@@ -67,15 +67,15 @@ func (backend FileBackend) Exists(key string) (bool, error) {
 	return !os.IsNotExist(err), nil
 }
 
-func (backend FileBackend) NamespaceExists(namespace string) (bool, error) {
+func (backend UnstructuredFileBackend) NamespaceExists(namespace string) (bool, error) {
 	return false, fmt.Errorf("Not implemented")
 }
 
-func (backend FileBackend) NamespaceClear(namespace string) (bool, error) {
+func (backend UnstructuredFileBackend) NamespaceClear(namespace string) (bool, error) {
 	return false, fmt.Errorf("Not implemented")
 }
 
-func (backend FileBackend) Get(key string, defaultValue string) (string, error) {
+func (backend UnstructuredFileBackend) Get(key string, defaultValue string) (string, error) {
 	if exists, _ := backend.Exists(key); !exists {
 		if defaultValue != "" {
 			return defaultValue, nil
@@ -93,7 +93,7 @@ func (backend FileBackend) Get(key string, defaultValue string) (string, error) 
 	return string(b), nil
 }
 
-func (backend FileBackend) GetAll() (map[string]string, error) {
+func (backend UnstructuredFileBackend) GetAll() (map[string]string, error) {
 	keyValuePairs := make(map[string]string)
 	files, err := ioutil.ReadDir(backend.NamespaceRoot)
 	if err != nil {
@@ -111,7 +111,7 @@ func (backend FileBackend) GetAll() (map[string]string, error) {
 	return keyValuePairs, nil
 }
 
-func (backend FileBackend) GetAllByPrefix(prefix string) (map[string]string, error) {
+func (backend UnstructuredFileBackend) GetAllByPrefix(prefix string) (map[string]string, error) {
 	keyValuePairs, err := backend.GetAll()
 	if err != nil {
 		return map[string]string{}, err
@@ -127,7 +127,7 @@ func (backend FileBackend) GetAllByPrefix(prefix string) (map[string]string, err
 	return response, nil
 }
 
-func (backend FileBackend) Set(key string, value string) (bool, error) {
+func (backend UnstructuredFileBackend) Set(key string, value string) (bool, error) {
 	if err := backend.touchKey(key); err != nil {
 		return false, err
 	}
@@ -146,7 +146,7 @@ func (backend FileBackend) Set(key string, value string) (bool, error) {
 	return true, nil
 }
 
-func (backend FileBackend) Lindex(key string, index int) (string, error) {
+func (backend UnstructuredFileBackend) Lindex(key string, index int) (string, error) {
 	lines, err := backend.Lrange(key)
 	if err != nil {
 		return "", err
@@ -161,7 +161,7 @@ func (backend FileBackend) Lindex(key string, index int) (string, error) {
 	return "", fmt.Errorf("Index not found in key: %s.%s", backend.Namespace, key)
 }
 
-func (backend FileBackend) Lismember(key string, element string) (bool, error) {
+func (backend UnstructuredFileBackend) Lismember(key string, element string) (bool, error) {
 	lines, err := backend.Lrange(key)
 	if err != nil {
 		return false, err
@@ -176,7 +176,7 @@ func (backend FileBackend) Lismember(key string, element string) (bool, error) {
 	return false, fmt.Errorf("Value not found in list: %s.%s", backend.Namespace, key)
 }
 
-func (backend FileBackend) Llen(key string) (int, error) {
+func (backend UnstructuredFileBackend) Llen(key string) (int, error) {
 	elements, err := backend.Lrange(key)
 	if err != nil {
 		return 0, err
@@ -185,7 +185,7 @@ func (backend FileBackend) Llen(key string) (int, error) {
 	return len(elements), nil
 }
 
-func (backend FileBackend) Lrange(key string) ([]string, error) {
+func (backend UnstructuredFileBackend) Lrange(key string) ([]string, error) {
 	if exists, _ := backend.Exists(key); !exists {
 		return []string{}, fmt.Errorf("Key does not exist in namespace")
 	}
@@ -210,7 +210,7 @@ func (backend FileBackend) Lrange(key string) ([]string, error) {
 	return values, nil
 }
 
-func (backend FileBackend) Lrangefrom(key string, start int) ([]string, error) {
+func (backend UnstructuredFileBackend) Lrangefrom(key string, start int) ([]string, error) {
 	elements, err := backend.Lrange(key)
 	if err != nil {
 		return []string{}, err
@@ -226,7 +226,7 @@ func (backend FileBackend) Lrangefrom(key string, start int) ([]string, error) {
 	return values, nil
 }
 
-func (backend FileBackend) Lrangefromto(key string, start int, stop int) ([]string, error) {
+func (backend UnstructuredFileBackend) Lrangefromto(key string, start int, stop int) ([]string, error) {
 	elements, err := backend.Lrange(key)
 	if err != nil {
 		return []string{}, err
@@ -242,7 +242,7 @@ func (backend FileBackend) Lrangefromto(key string, start int, stop int) ([]stri
 	return values, nil
 }
 
-func (backend FileBackend) Lrem(key string, countToRemove int, element string) (int, error) {
+func (backend UnstructuredFileBackend) Lrem(key string, countToRemove int, element string) (int, error) {
 	elements, err := backend.Lrange(key)
 	if err != nil {
 		return 0, err
@@ -284,7 +284,7 @@ func (backend FileBackend) Lrem(key string, countToRemove int, element string) (
 	return removed, nil
 }
 
-func (backend FileBackend) Rpush(key string, newElements ...string) (int, error) {
+func (backend UnstructuredFileBackend) Rpush(key string, newElements ...string) (int, error) {
 	if err := backend.touchKey(key); err != nil {
 		return 0, err
 	}
@@ -303,7 +303,7 @@ func (backend FileBackend) Rpush(key string, newElements ...string) (int, error)
 	return len(elements), nil
 }
 
-func (backend FileBackend) Sadd(key string, newMembers ...string) (int, error) {
+func (backend UnstructuredFileBackend) Sadd(key string, newMembers ...string) (int, error) {
 	if err := backend.touchKey(key); err != nil {
 		return 0, err
 	}
@@ -328,7 +328,7 @@ func (backend FileBackend) Sadd(key string, newMembers ...string) (int, error) {
 	return addedCount, nil
 }
 
-func (backend FileBackend) Sismember(key string, member string) (bool, error) {
+func (backend UnstructuredFileBackend) Sismember(key string, member string) (bool, error) {
 	if exists, _ := backend.Exists(key); !exists {
 		return false, fmt.Errorf("Set does not exist: %s.%s", backend.Namespace, key)
 	}
@@ -342,7 +342,7 @@ func (backend FileBackend) Sismember(key string, member string) (bool, error) {
 	return ok, nil
 }
 
-func (backend FileBackend) Smembers(key string) (map[string]bool, error) {
+func (backend UnstructuredFileBackend) Smembers(key string) (map[string]bool, error) {
 	if exists, _ := backend.Exists(key); !exists {
 		return map[string]bool{}, fmt.Errorf("Key does not exist in namespace")
 	}
@@ -367,7 +367,7 @@ func (backend FileBackend) Smembers(key string) (map[string]bool, error) {
 	return values, nil
 }
 
-func (backend FileBackend) Srem(key string, membersToRemove ...string) (int, error) {
+func (backend UnstructuredFileBackend) Srem(key string, membersToRemove ...string) (int, error) {
 	if exists, _ := backend.Exists(key); !exists {
 		return 0, fmt.Errorf("Key does not exist in namespace")
 	}
@@ -391,12 +391,12 @@ func (backend FileBackend) Srem(key string, membersToRemove ...string) (int, err
 	return removedCount, nil
 }
 
-func (backend FileBackend) getKeyPath(key string) string {
+func (backend UnstructuredFileBackend) getKeyPath(key string) string {
 	return path.Join(backend.NamespaceRoot, key)
 }
 
 // propertyTouch ensures a given application property file exists
-func (backend FileBackend) touchKey(key string) error {
+func (backend UnstructuredFileBackend) touchKey(key string) error {
 	if exists, _ := backend.Exists(key); exists {
 		return nil
 	}
@@ -415,7 +415,7 @@ func (backend FileBackend) touchKey(key string) error {
 	return nil
 }
 
-func (backend FileBackend) writeList(key string, elements []string) error {
+func (backend UnstructuredFileBackend) writeList(key string, elements []string) error {
 	keyPath := backend.getKeyPath(key)
 	file, err := os.OpenFile(keyPath, os.O_RDWR|os.O_TRUNC, 0600)
 	if err != nil {
@@ -435,7 +435,7 @@ func (backend FileBackend) writeList(key string, elements []string) error {
 	return nil
 }
 
-func (backend FileBackend) writeSet(key string, members map[string]bool) error {
+func (backend UnstructuredFileBackend) writeSet(key string, members map[string]bool) error {
 	keyPath := backend.getKeyPath(key)
 	file, err := os.OpenFile(keyPath, os.O_RDWR|os.O_TRUNC, 0600)
 	if err != nil {
@@ -456,7 +456,7 @@ func (backend FileBackend) writeSet(key string, members map[string]bool) error {
 }
 
 // makeNamespaceDirectory ensures that a property path exists
-func (backend FileBackend) makeNamespaceDirectory() error {
+func (backend UnstructuredFileBackend) makeNamespaceDirectory() error {
 	if err := os.MkdirAll(backend.NamespaceRoot, 0755); err != nil {
 		return err
 	}
@@ -464,7 +464,7 @@ func (backend FileBackend) makeNamespaceDirectory() error {
 }
 
 // setPermissions sets the proper owner and filemode for a given file
-func (backend FileBackend) setPermissions(path string, fileMode os.FileMode) error {
+func (backend UnstructuredFileBackend) setPermissions(path string, fileMode os.FileMode) error {
 	if err := os.Chmod(path, fileMode); err != nil {
 		return err
 	}
