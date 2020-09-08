@@ -153,14 +153,16 @@ prop config del backend_url
 - Description: Delete all keys from a given namespace
 - Method Signature: `func (b Backend) NamespaceClear(namespace string) (success bool, err error)`
 
-### `key-value` commands
+### global commands
 
-### `del key`
+#### `del key`
 
 - Description: Delete a key
 - Data Type: `key-value`, `list`, `set`
 - Supported Flags: `--namespace`
 - Method Signature: `func (b Backend) Del(key string) (success bool, err error)`
+
+### `key-value` commands
 
 ### `exists key`
 
@@ -174,15 +176,15 @@ prop config del backend_url
 - Description: Get the value of a key
 - Data Type: `key-value`
 - Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) Get(key string) (value string, err error)`
+- Method Signature: `func (b Backend) Get(key string, defaultValue string) (value string, err error)`
 
 #### `get-all [prefix]`
 
 - Description: Get all key-value tuples
 - Data Type: `[(key-value tuple)]`
 - Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) GetAll() (keyValuePairs []map[string]string, err error)`
-- Method Signature: `func (b Backend) GetAllByPrefix(prefix string) (keyValuePairs []map[string]string, err error)`
+- Method Signature: `func (b Backend) GetAll() (keyValuePairs map[string]string, err error)`
+- Method Signature: `func (b Backend) GetAllByPrefix(prefix string) (keyValuePairs map[string]string, err error)`
 
 #### `set key value`
 
@@ -251,7 +253,7 @@ prop config del backend_url
 - Description: Add one or more members to a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) Sadd(key string, member ...string) (addedCount int, err error)`
+- Method Signature: `func (b Backend) Sadd(key string, newMembers ...string) (addedCount int, err error)`
 
 #### `sismember key member`
 
@@ -265,14 +267,14 @@ prop config del backend_url
 - Description: Get all the members in a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) Smembers(key string) (member []string, err error)`
+- Method Signature: `func (b Backend) Smembers(key string) (member map[string]bool, err error)`
 
 #### `srem key member [member ...]`
 
 - Description: Remove one or more members from a set
 - Data Type: `set`
 - Supported Flags: `--namespace`
-- Method Signature: `func (b Backend) Srem(key string, member...string) (removedCount int, err error)`
+- Method Signature: `func (b Backend) Srem(key string, membersToRemove...string) (removedCount int, err error)`
 
 ## Backends
 
