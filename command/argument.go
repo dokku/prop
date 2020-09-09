@@ -91,6 +91,8 @@ func parseArguments(args []string, arguments []Argument) (map[string]Argument, e
 	errorMessage := fmt.Sprintf("This command requires %d", minArgs)
 	if minArgs != maxArgs {
 		errorMessage = fmt.Sprintf("%s and at most %d %s", errorMessage, maxArgs, argumentWord)
+	} else {
+		errorMessage = fmt.Sprintf("%s %s", errorMessage, argumentWord)
 	}
 
 	errorMessage = fmt.Sprintf("%s: %s", errorMessage, argumentString(arguments))
