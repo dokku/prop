@@ -217,6 +217,10 @@ func (backend UnstructuredFileBackend) Lrangefrom(key string, start int) ([]stri
 	}
 
 	var values []string
+	if start > len(elements) {
+		return values, nil
+	}
+
 	for i, element := range elements {
 		if i >= start {
 			values = append(values, element)
@@ -233,6 +237,10 @@ func (backend UnstructuredFileBackend) Lrangefromto(key string, start int, stop 
 	}
 
 	var values []string
+	if start > len(elements) {
+		return values, nil
+	}
+
 	for i, element := range elements {
 		if i >= start && i <= stop {
 			values = append(values, element)
