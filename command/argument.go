@@ -2,6 +2,7 @@ package command
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -20,6 +21,7 @@ const (
 	ArgumentString ArgumentType = 0
 	ArgumentInt    ArgumentType = 1 << iota
 	ArgumentBool   ArgumentType = 2 << iota
+	ArgumentList   ArgumentType = 3 << iota
 )
 
 func (a Argument) BoolValue() bool {
@@ -44,6 +46,14 @@ func (a Argument) StringValue() string {
 	}
 
 	return a.Value.(string)
+}
+
+func (a Argument) ListValue() []string {
+	if a.Type != ArgumentList {
+		panic(fmt.Errorf("Unexpected argument type for %s when calling ListValue()", a.Name))
+	}
+
+	return a.Value.([]string)
 }
 
 func argumentString(arguments []Argument) string {
@@ -95,9 +105,30 @@ func parseArguments(args []string, arguments []Argument) (map[string]Argument, e
 		}
 	}
 
+	hasListArgument := false
+	listIndex := 0
 	for i, value := range args {
-		arguments[i].HasValue = true
-		arguments[i].Value = value
+		if hasListArgument {
+			arguments[listIndex].HasValue = true
+			arguments[listIndex].Value = append(arguments[listIndex].Value.([]string), value)
+		} else {
+			arguments[i].HasValue = true
+			if arguments[i].Type == ArgumentList {
+				hasListArgument = true
+				listIndex = i
+				arguments[i].Value = []string{value}
+			} else {
+				if arguments[i].Type == ArgumentInt {
+					intValue, err := strconv.Atoi(value)
+					if err != nil {
+						return returnArguments, fmt.Errorf("Invalid value for argument %s", arguments[i].Name)
+					}
+					arguments[i].Value = intValue
+				} else {
+					arguments[i].Value = value
+				}
+			}
+		}
 	}
 
 	for _, argument := range arguments {
@@ -106,6 +137,8 @@ func parseArguments(args []string, arguments []Argument) (map[string]Argument, e
 				argument.Value = false
 			} else if argument.Type == ArgumentInt {
 				argument.Value = 0
+			} else if argument.Type == ArgumentList {
+				argument.Value = []string{}
 			} else if argument.Type == ArgumentString {
 				argument.Value = ""
 			}
@@ -119,16 +152,22 @@ func parseArguments(args []string, arguments []Argument) (map[string]Argument, e
 
 func validateArguments(arguments []Argument) error {
 	reachedOptional := false
+	reachedList := false
+	listArgument := ""
 	for _, arg := range arguments {
 		if reachedOptional {
 			if !arg.Optional {
 				return fmt.Errorf("Argument %s must be placed before all optional arguments", arg.Name)
 			}
-			continue
+		} else if arg.Optional {
+			reachedOptional = true
 		}
 
-		if arg.Optional {
-			reachedOptional = true
+		if reachedList {
+			return fmt.Errorf("List Argument %s must be placed after all other arguments", listArgument)
+		} else if arg.Type == ArgumentList {
+			listArgument = arg.Name
+			reachedList = true
 		}
 	}
 	return nil
