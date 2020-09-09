@@ -218,7 +218,7 @@ prop config del backend_url
 
 #### `lrange key [start [stop]]`
 
-- Description: Get a range of elements from a list.
+- Description: Get a range of elements from a list
 - Data Type: `list`
 - Supported Flags: `--namespace`
 - Method Signature: `func (b Backend) Lrange(key string) ([]string, err error)`
