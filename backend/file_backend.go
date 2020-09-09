@@ -395,28 +395,28 @@ func (backend UnstructuredFileBackend) Sismember(key string, member string) (boo
 }
 
 func (backend UnstructuredFileBackend) Smembers(key string) (map[string]bool, error) {
+	members := make(map[string]bool)
 	if exists, _ := backend.Exists(key); !exists {
-		return map[string]bool{}, fmt.Errorf("Key does not exist in namespace")
+		return members, fmt.Errorf("Key does not exist in namespace")
 	}
 
 	keyPath := backend.getKeyPath(key)
 	file, err := os.Open(keyPath)
 	if err != nil {
-		return map[string]bool{}, err
+		return members, err
 	}
 	defer file.Close()
 
-	var values map[string]bool
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		values[scanner.Text()] = true
+		members[scanner.Text()] = true
 	}
 
 	if err = scanner.Err(); err != nil {
-		return values, fmt.Errorf("Unable to read config value for %s.%s: %s", backend.Namespace, key, err.Error())
+		return members, fmt.Errorf("Unable to read config value for %s.%s: %s", backend.Namespace, key, err.Error())
 	}
 
-	return values, nil
+	return members, nil
 }
 
 func (backend UnstructuredFileBackend) Srem(key string, membersToRemove ...string) (int, error) {
