@@ -53,7 +53,7 @@ func (c *LismemberCommand) AutocompleteArgs() complete.Predictor {
 
 func (c *LismemberCommand) Examples() map[string]string {
 	return map[string]string{
-		"Check if an element is in the list": "prop lismember mykey myelement",
+		"Check if an element is in the list": "prop lismember mylist myelement",
 	}
 }
 

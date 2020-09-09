@@ -58,7 +58,7 @@ func (c *LsetCommand) AutocompleteArgs() complete.Predictor {
 
 func (c *LsetCommand) Examples() map[string]string {
 	return map[string]string{
-		"Set an element at a position in a list": "prop lset mykey 0 myelement",
+		"Set an element at a position in a list": "prop lset mylist 0 myelement",
 	}
 }
 

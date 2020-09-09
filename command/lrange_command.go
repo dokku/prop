@@ -58,7 +58,7 @@ func (c *LrangeCommand) AutocompleteArgs() complete.Predictor {
 
 func (c *LrangeCommand) Examples() map[string]string {
 	return map[string]string{
-		"Get all elements in list": "prop lrange mykey",
+		"Get all elements in list": "prop lrange mylist",
 	}
 }
 

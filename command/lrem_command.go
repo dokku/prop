@@ -59,7 +59,7 @@ func (c *LremCommand) AutocompleteArgs() complete.Predictor {
 
 func (c *LremCommand) Examples() map[string]string {
 	return map[string]string{
-		"Remove an element from a list": "prop lrem mykey 0 myelement",
+		"Remove an element from a list": "prop lrem mylist 0 myelement",
 	}
 }
 

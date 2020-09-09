@@ -49,7 +49,7 @@ func (c *LlenCommand) AutocompleteArgs() complete.Predictor {
 
 func (c *LlenCommand) Examples() map[string]string {
 	return map[string]string{
-		"Get the length of the list": "prop llen mykey",
+		"Get the length of the list": "prop llen mylist",
 	}
 }
 

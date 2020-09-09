@@ -53,7 +53,7 @@ func (c *LindexCommand) AutocompleteArgs() complete.Predictor {
 
 func (c *LindexCommand) Examples() map[string]string {
 	return map[string]string{
-		"Get the first element in a list": "prop lindex mykey 0",
+		"Get the first element in a list": "prop lindex mylist 0",
 	}
 }
 
