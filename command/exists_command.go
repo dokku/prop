@@ -23,30 +23,9 @@ General Options:
 
 Example:
 
-  Check if a key exists:
-      $ prop exists mykey
-`
+` + exampleString(c.Examples())
+
 	return strings.TrimSpace(helpText)
-}
-
-func (c *ExistsCommand) AutocompleteFlags() complete.Flags {
-	return complete.Flags{}
-}
-
-func (c *ExistsCommand) AutocompleteArgs() complete.Predictor {
-	return complete.PredictNothing
-}
-
-func (c *ExistsCommand) Synopsis() string {
-	return "Check if a key exists"
-}
-
-func (c *ExistsCommand) Name() string {
-	return "exists"
-}
-
-func (c *ExistsCommand) FlagSet() *flag.FlagSet {
-	return c.Meta.FlagSet(c.Name(), FlagSetClient)
 }
 
 func (c *ExistsCommand) Arguments() []Argument {
@@ -59,8 +38,34 @@ func (c *ExistsCommand) Arguments() []Argument {
 	return args
 }
 
+func (c *ExistsCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{}
+}
+
+func (c *ExistsCommand) AutocompleteArgs() complete.Predictor {
+	return complete.PredictNothing
+}
+
+func (c *ExistsCommand) Examples() map[string]string {
+	return map[string]string{
+		"Check if a key exists": "prop exists mykey",
+	}
+}
+
+func (c *ExistsCommand) FlagSet() *flag.FlagSet {
+	return c.Meta.FlagSet(c.Name(), FlagSetClient)
+}
+
+func (c *ExistsCommand) Name() string {
+	return "exists"
+}
+
 func (c *ExistsCommand) ParsedArguments(args []string) (map[string]Argument, error) {
 	return parseArguments(args, c.Arguments())
+}
+
+func (c *ExistsCommand) Synopsis() string {
+	return "Check if a key exists"
 }
 
 func (c *ExistsCommand) Run(args []string) int {

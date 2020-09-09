@@ -23,30 +23,9 @@ General Options:
 
 Example:
 
-  Delete a key:
-      $ prop del mykey
-`
+` + exampleString(c.Examples())
+
 	return strings.TrimSpace(helpText)
-}
-
-func (c *DelCommand) AutocompleteFlags() complete.Flags {
-	return complete.Flags{}
-}
-
-func (c *DelCommand) AutocompleteArgs() complete.Predictor {
-	return complete.PredictNothing
-}
-
-func (c *DelCommand) Synopsis() string {
-	return "Delete a key"
-}
-
-func (c *DelCommand) Name() string {
-	return "del"
-}
-
-func (c *DelCommand) FlagSet() *flag.FlagSet {
-	return c.Meta.FlagSet(c.Name(), FlagSetClient)
 }
 
 func (c *DelCommand) Arguments() []Argument {
@@ -59,8 +38,34 @@ func (c *DelCommand) Arguments() []Argument {
 	return args
 }
 
+func (c *DelCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{}
+}
+
+func (c *DelCommand) AutocompleteArgs() complete.Predictor {
+	return complete.PredictNothing
+}
+
+func (c *DelCommand) Examples() map[string]string {
+	return map[string]string{
+		"Delete a key": "prop del mykey",
+	}
+}
+
+func (c *DelCommand) FlagSet() *flag.FlagSet {
+	return c.Meta.FlagSet(c.Name(), FlagSetClient)
+}
+
+func (c *DelCommand) Name() string {
+	return "del"
+}
+
 func (c *DelCommand) ParsedArguments(args []string) (map[string]Argument, error) {
 	return parseArguments(args, c.Arguments())
+}
+
+func (c *DelCommand) Synopsis() string {
+	return "Delete a key"
 }
 
 func (c *DelCommand) Run(args []string) int {

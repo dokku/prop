@@ -24,30 +24,9 @@ General Options:
 
 Example:
 
-  Get all values in a namespace:
-      $ prop get-all
-`
+` + exampleString(c.Examples())
+
 	return strings.TrimSpace(helpText)
-}
-
-func (c *GetAllCommand) AutocompleteFlags() complete.Flags {
-	return complete.Flags{}
-}
-
-func (c *GetAllCommand) AutocompleteArgs() complete.Predictor {
-	return complete.PredictNothing
-}
-
-func (c *GetAllCommand) Synopsis() string {
-	return "Get all values in a namespace"
-}
-
-func (c *GetAllCommand) Name() string {
-	return "get-all"
-}
-
-func (c *GetAllCommand) FlagSet() *flag.FlagSet {
-	return c.Meta.FlagSet(c.Name(), FlagSetClient)
 }
 
 func (c *GetAllCommand) Arguments() []Argument {
@@ -60,8 +39,34 @@ func (c *GetAllCommand) Arguments() []Argument {
 	return args
 }
 
+func (c *GetAllCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{}
+}
+
+func (c *GetAllCommand) AutocompleteArgs() complete.Predictor {
+	return complete.PredictNothing
+}
+
+func (c *GetAllCommand) Examples() map[string]string {
+	return map[string]string{
+		"Get all values in a namespace": "prop get-all",
+	}
+}
+
+func (c *GetAllCommand) FlagSet() *flag.FlagSet {
+	return c.Meta.FlagSet(c.Name(), FlagSetClient)
+}
+
+func (c *GetAllCommand) Name() string {
+	return "get-all"
+}
+
 func (c *GetAllCommand) ParsedArguments(args []string) (map[string]Argument, error) {
 	return parseArguments(args, c.Arguments())
+}
+
+func (c *GetAllCommand) Synopsis() string {
+	return "Get all values in a namespace"
 }
 
 func (c *GetAllCommand) Run(args []string) int {

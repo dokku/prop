@@ -23,30 +23,9 @@ General Options:
 
 Example:
 
-  Get a key:
-      $ prop get mykey
-`
+` + exampleString(c.Examples())
+
 	return strings.TrimSpace(helpText)
-}
-
-func (c *GetCommand) AutocompleteFlags() complete.Flags {
-	return complete.Flags{}
-}
-
-func (c *GetCommand) AutocompleteArgs() complete.Predictor {
-	return complete.PredictNothing
-}
-
-func (c *GetCommand) Synopsis() string {
-	return "Get the value of a key"
-}
-
-func (c *GetCommand) Name() string {
-	return "get"
-}
-
-func (c *GetCommand) FlagSet() *flag.FlagSet {
-	return c.Meta.FlagSet(c.Name(), FlagSetClient)
 }
 
 func (c *GetCommand) Arguments() []Argument {
@@ -64,8 +43,33 @@ func (c *GetCommand) Arguments() []Argument {
 	return args
 }
 
+func (c *GetCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{}
+}
+
+func (c *GetCommand) AutocompleteArgs() complete.Predictor {
+	return complete.PredictNothing
+}
+
+func (c *GetCommand) Examples() map[string]string {
+	return map[string]string{
+		"Get a key": "prop get mykey",
+	}
+}
+func (c *GetCommand) FlagSet() *flag.FlagSet {
+	return c.Meta.FlagSet(c.Name(), FlagSetClient)
+}
+
+func (c *GetCommand) Name() string {
+	return "get"
+}
+
 func (c *GetCommand) ParsedArguments(args []string) (map[string]Argument, error) {
 	return parseArguments(args, c.Arguments())
+}
+
+func (c *GetCommand) Synopsis() string {
+	return "Get the value of a key"
 }
 
 func (c *GetCommand) Run(args []string) int {

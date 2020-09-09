@@ -115,6 +115,16 @@ func (f funcVar) Set(s string) error { return f(s) }
 func (f funcVar) String() string     { return "" }
 func (f funcVar) IsBoolFlag() bool   { return false }
 
+func exampleString(examples map[string]string) string {
+	exampleString := []string{}
+
+	for name, example := range examples {
+		exampleString = append(exampleString, "  "+name+"\n    $ "+example)
+	}
+
+	return strings.Join(exampleString, "\n\n")
+}
+
 func flagString(flags *flag.FlagSet) string {
 	flagString := []string{}
 

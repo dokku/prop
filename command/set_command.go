@@ -23,30 +23,9 @@ General Options:
 
 Example:
 
-  Set a key:
-      $ prop set mykey myvalue
-`
+` + exampleString(c.Examples())
+
 	return strings.TrimSpace(helpText)
-}
-
-func (c *SetCommand) AutocompleteFlags() complete.Flags {
-	return complete.Flags{}
-}
-
-func (c *SetCommand) AutocompleteArgs() complete.Predictor {
-	return complete.PredictNothing
-}
-
-func (c *SetCommand) Synopsis() string {
-	return "Set the value of a key"
-}
-
-func (c *SetCommand) Name() string {
-	return "set"
-}
-
-func (c *SetCommand) FlagSet() *flag.FlagSet {
-	return c.Meta.FlagSet(c.Name(), FlagSetClient)
 }
 
 func (c *SetCommand) Arguments() []Argument {
@@ -64,8 +43,34 @@ func (c *SetCommand) Arguments() []Argument {
 	return args
 }
 
+func (c *SetCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{}
+}
+
+func (c *SetCommand) AutocompleteArgs() complete.Predictor {
+	return complete.PredictNothing
+}
+
+func (c *SetCommand) Examples() map[string]string {
+	return map[string]string{
+		"Set a key": "prop set mykey myvalue",
+	}
+}
+
+func (c *SetCommand) FlagSet() *flag.FlagSet {
+	return c.Meta.FlagSet(c.Name(), FlagSetClient)
+}
+
+func (c *SetCommand) Name() string {
+	return "set"
+}
+
 func (c *SetCommand) ParsedArguments(args []string) (map[string]Argument, error) {
 	return parseArguments(args, c.Arguments())
+}
+
+func (c *SetCommand) Synopsis() string {
+	return "Set the value of a key"
 }
 
 func (c *SetCommand) Run(args []string) int {
