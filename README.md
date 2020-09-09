@@ -241,7 +241,7 @@ prop config del backend_url
 
 #### `rpush key element [element...]`
 
-- Description: Append one or more members to a list
+- Description: Append one or more elements to a list
 - Data Type: `list`
 - Supported Flags: `--namespace`
 - Method Signature: `func (b Backend) Rpush(key string, newElements ...string) (listLength int, err error)`
