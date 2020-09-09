@@ -39,6 +39,10 @@ func Commands(metaPtr *Meta, agentUi cli.Ui) map[string]cli.CommandFactory {
 		all[k] = v
 	}
 
+	for k, v := range NamespaceCommands(meta) {
+		all[k] = v
+	}
+
 	for k, v := range KeyValueCommands(meta) {
 		all[k] = v
 	}
@@ -67,6 +71,17 @@ func BackendCommands(meta Meta) map[string]cli.CommandFactory {
 		"backend reset": func() (cli.Command, error) {
 			// backend reset
 			return &BackendResetCommand{}, nil
+		},
+	}
+}
+
+func NamespaceCommands(meta Meta) map[string]cli.CommandFactory {
+	return map[string]cli.CommandFactory{
+		"namespace exists": func() (cli.Command, error) {
+			return &NamespaceExistsCommand{Meta: meta}, nil
+		},
+		"namespace clear": func() (cli.Command, error) {
+			return &NamespaceClearCommand{Meta: meta}, nil
 		},
 	}
 }
