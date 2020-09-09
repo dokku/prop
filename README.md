@@ -104,9 +104,9 @@ Used for configuring `prop`.
 
 Current configuration values that may be manipulated:
 
-- `backend_url`:
+- `url`:
   - Type: string
-  - Default: `file:///etc/prop.d`
+  - Default: `file:/etc/prop.d`
   - environment Variable: `PROP_BACKEND_URL`
   - Description: A configured backend for prop, specified in [DSN](https://en.wikipedia.org/wiki/Data_source_name) form. Backends are built into the prop project. Currently supported backends are `file` and `postgres`
 - `namespace`:
@@ -122,7 +122,7 @@ All properties may be specified as environment variables. The `config.json` hold
 - Description: Get a configuration value
 
 ```shell
-prop config get backend_url
+prop config get url
 ```
 
 #### `config set key value`
@@ -130,7 +130,7 @@ prop config get backend_url
 - Description: Set a configuration value
 
 ```shell
-prop config set backend_url postgres://user:password@host:port/database
+prop config set url postgres://user:password@host:port/database
 ```
 
 #### `config del key`
@@ -138,7 +138,7 @@ prop config set backend_url postgres://user:password@host:port/database
 - Description: Delete a configuration value
 
 ```
-prop config del backend_url
+prop config del url
 ```
 
 ### `namespace` commands
@@ -316,7 +316,7 @@ The following backends are supported.
 To configure, run:
 
 ```shell
-prop config set backend_url file:///etc/prop.d
+prop config set url file:/etc/prop.d
 ```
 
 The directory structure is as follows:
@@ -344,7 +344,7 @@ When querying for a property, if the type of the value does not match the type s
 To configure, run:
 
 ```shell
-prop config set backend_url redis://user:password@host:port/database
+prop config set url redis://user:password@host:port/database
 ```
 
 With the redis backend, commands map to their redis equivalents where appropriate. If there is no equivalent redis command, a redis script may be used instead to implement the functionality.
@@ -358,7 +358,7 @@ Namespaces are implemented via key prefixes, with the namespace being prepended 
 To configure, run:
 
 ```shell
-prop config set backend_url postgres://user:password@host:port/database
+prop config set url postgres://user:password@host:port/database
 ```
 
 The following is the SQL schema:
