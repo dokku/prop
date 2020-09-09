@@ -86,6 +86,10 @@ func (backend UnimplementedBackend) Lrem(key string, countToRemove int, element 
 	return 0, fmt.Errorf("Not implemented")
 }
 
+func (backend UnimplementedBackend) Lset(key string, index int, element string) (bool, error) {
+	return false, fmt.Errorf("Not implemented")
+}
+
 func (backend UnimplementedBackend) Rpush(key string, newElements ...string) (int, error) {
 	return 0, fmt.Errorf("Not implemented")
 }

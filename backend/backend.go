@@ -25,6 +25,7 @@ type Backend interface {
 	Lrangefrom(key string, start int) ([]string, error)
 	Lrangefromto(key string, start int, stop int) ([]string, error)
 	Lrem(key string, countToRemove int, element string) (int, error)
+	Lset(key string, index int, element string) (bool, error)
 	Rpush(key string, newElements ...string) (int, error)
 	Sadd(key string, newMembers ...string) (int, error)
 	Sismember(key string, member string) (bool, error)

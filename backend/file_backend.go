@@ -284,6 +284,41 @@ func (backend UnstructuredFileBackend) Lrem(key string, countToRemove int, eleme
 	return removed, nil
 }
 
+func (backend UnstructuredFileBackend) Lset(key string, index int, element string) (bool, error) {
+	if err := backend.touchKey(key); err != nil {
+		return false, err
+	}
+
+	elements, err := backend.Lrange(key)
+	if err != nil {
+		return false, err
+	}
+
+	element = strings.TrimSpace(element)
+
+	var newElements []string
+	if index >= len(elements) {
+		for _, line := range elements {
+			newElements = append(newElements, line)
+		}
+		newElements = append(newElements, element)
+	} else {
+		for i, line := range elements {
+			if i == index {
+				newElements = append(newElements, element)
+			} else {
+				newElements = append(newElements, line)
+			}
+		}
+	}
+
+	if err = backend.writeList(key, newElements); err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
 func (backend UnstructuredFileBackend) Rpush(key string, newElements ...string) (int, error) {
 	if err := backend.touchKey(key); err != nil {
 		return 0, err
