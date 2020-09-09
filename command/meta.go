@@ -96,12 +96,12 @@ func (m *Meta) Colorize() *colorstring.Colorize {
 // generalOptionsUsage returns the help string for the global options.
 func generalOptionsUsage() string {
 	helpText := `
-  -no-color
+  --no-color
     Disables colored command output. Alternatively, PROP_CLI_NO_COLOR may be
     set.
-  -namespace
+  --namespace <namespace>
     The namespace to interact with.
-  -url
+  --url <url>
     The url to use for the backend.
 `
 	return strings.TrimSpace(helpText)
@@ -130,11 +130,11 @@ func flagString(flags *flag.FlagSet) string {
 
 	flags.VisitAll(func(f *flag.Flag) {
 		if f.DefValue == "true" || f.DefValue == "false" {
-			flagString = append(flagString, fmt.Sprintf("-%s", f.Name))
+			flagString = append(flagString, fmt.Sprintf("--%s", f.Name))
 			return
 		}
 
-		flagString = append(flagString, fmt.Sprintf("-%s <%[1]s-value>", f.Name))
+		flagString = append(flagString, fmt.Sprintf("--%s <%[1]s-value>", f.Name))
 	})
 	return strings.Join(flagString, " ")
 }
