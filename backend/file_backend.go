@@ -294,22 +294,31 @@ func (backend UnstructuredFileBackend) Lset(key string, index int, element strin
 		return false, err
 	}
 
-	element = strings.TrimSpace(element)
+	absIndex := index
+	if index < 0 {
+		absIndex = -index - 1
+	}
+
+	if absIndex >= len(elements) {
+		return false, fmt.Errorf("Index out of range")
+	}
 
 	var newElements []string
-	if index >= len(elements) {
-		for _, line := range elements {
+	element = strings.TrimSpace(element)
+	if index < 0 {
+		reverse(elements)
+	}
+
+	for i, line := range elements {
+		if i == absIndex {
+			newElements = append(newElements, element)
+		} else {
 			newElements = append(newElements, line)
 		}
-		newElements = append(newElements, element)
-	} else {
-		for i, line := range elements {
-			if i == index {
-				newElements = append(newElements, element)
-			} else {
-				newElements = append(newElements, line)
-			}
-		}
+	}
+
+	if index < 0 {
+		reverse(newElements)
 	}
 
 	if err = backend.writeList(key, newElements); err != nil {
