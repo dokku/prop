@@ -39,6 +39,10 @@ func Commands(metaPtr *Meta, agentUi cli.Ui) map[string]cli.CommandFactory {
 		all[k] = v
 	}
 
+	for k, v := range ListCommands(meta) {
+		all[k] = v
+	}
+
 	return all
 }
 
@@ -58,6 +62,32 @@ func KeyValueCommands(meta Meta) map[string]cli.CommandFactory {
 		},
 		"set": func() (cli.Command, error) {
 			return &SetCommand{Meta: meta}, nil
+		},
+	}
+}
+
+func ListCommands(meta Meta) map[string]cli.CommandFactory {
+	return map[string]cli.CommandFactory{
+		"lindex": func() (cli.Command, error) {
+			return &LindexCommand{Meta: meta}, nil
+		},
+		"lismember": func() (cli.Command, error) {
+			return &LismemberCommand{Meta: meta}, nil
+		},
+		"llen": func() (cli.Command, error) {
+			return &LlenCommand{Meta: meta}, nil
+		},
+		"lrange": func() (cli.Command, error) {
+			return &LrangeCommand{Meta: meta}, nil
+		},
+		"lrem": func() (cli.Command, error) {
+			return &LremCommand{Meta: meta}, nil
+		},
+		"lset": func() (cli.Command, error) {
+			return &LsetCommand{Meta: meta}, nil
+		},
+		"rpush": func() (cli.Command, error) {
+			return &RpushCommand{Meta: meta}, nil
 		},
 	}
 }
