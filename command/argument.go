@@ -107,7 +107,7 @@ func parseArguments(args []string, arguments []Argument) (map[string]Argument, e
 		}
 	}
 
-	if len(args) != minArgs {
+	if len(args) < minArgs {
 		return returnArguments, fmt.Errorf(errorMessage)
 	}
 
