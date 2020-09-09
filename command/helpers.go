@@ -359,7 +359,7 @@ func sanitizeUUIDPrefix(prefix string) string {
 // commandErrorText is used to easily render the same messaging across commads
 // when an error is printed.
 func commandErrorText(cmd NamedCommand) string {
-	return fmt.Sprintf("For additional help try 'prop %s -help'", cmd.Name())
+	return fmt.Sprintf("For additional help try 'prop %s --help'", cmd.Name())
 }
 
 // uiErrorWriter is a io.Writer that wraps underlying ui.ErrorWriter().
