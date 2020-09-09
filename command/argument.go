@@ -107,6 +107,10 @@ func parseArguments(args []string, arguments []Argument) (map[string]Argument, e
 		}
 	}
 
+	if len(args) != minArgs {
+		return returnArguments, fmt.Errorf(errorMessage)
+	}
+
 	hasListArgument := false
 	listIndex := 0
 	for i, value := range args {
