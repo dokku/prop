@@ -43,6 +43,10 @@ func Commands(metaPtr *Meta, agentUi cli.Ui) map[string]cli.CommandFactory {
 		all[k] = v
 	}
 
+	for k, v := range SetCommands(meta) {
+		all[k] = v
+	}
+
 	return all
 }
 
@@ -88,6 +92,23 @@ func ListCommands(meta Meta) map[string]cli.CommandFactory {
 		},
 		"rpush": func() (cli.Command, error) {
 			return &RpushCommand{Meta: meta}, nil
+		},
+	}
+}
+
+func SetCommands(meta Meta) map[string]cli.CommandFactory {
+	return map[string]cli.CommandFactory{
+		"sadd": func() (cli.Command, error) {
+			return &SaddCommand{Meta: meta}, nil
+		},
+		"sismember": func() (cli.Command, error) {
+			return &SismemberCommand{Meta: meta}, nil
+		},
+		"smembers": func() (cli.Command, error) {
+			return &SmembersCommand{Meta: meta}, nil
+		},
+		"srem": func() (cli.Command, error) {
+			return &SremCommand{Meta: meta}, nil
 		},
 	}
 }
