@@ -24,7 +24,7 @@ const (
 
 func (a Argument) BoolValue() bool {
 	if a.Type != ArgumentBool {
-		panic(fmt.Errorf("Unexpected argument type for %d when calling BoolValue()", a.Type))
+		panic(fmt.Errorf("Unexpected argument type for %s when calling BoolValue()", a.Name))
 	}
 
 	return a.Value.(bool)
@@ -32,7 +32,7 @@ func (a Argument) BoolValue() bool {
 
 func (a Argument) IntValue() int {
 	if a.Type != ArgumentInt {
-		panic(fmt.Errorf("Unexpected argument type for %d when calling IntValue()", a.Type))
+		panic(fmt.Errorf("Unexpected argument type for %s when calling IntValue()", a.Name))
 	}
 
 	return a.Value.(int)
@@ -40,7 +40,7 @@ func (a Argument) IntValue() int {
 
 func (a Argument) StringValue() string {
 	if a.Type != ArgumentString {
-		panic(fmt.Errorf("Unexpected argument type for %d when calling StringValue()", a.Type))
+		panic(fmt.Errorf("Unexpected argument type for %s when calling StringValue()", a.Name))
 	}
 
 	return a.Value.(string)
