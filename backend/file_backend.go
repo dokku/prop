@@ -40,7 +40,7 @@ func (backend UnstructuredFileBackend) BackendImport(clear bool) (PropertyCollec
 	return PropertyCollection{}, false, fmt.Errorf("Not implemented")
 }
 
-func (backend UnstructuredFileBackend) BackendClear() (bool, error) {
+func (backend UnstructuredFileBackend) BackendReset() (bool, error) {
 	return false, fmt.Errorf("Not implemented")
 }
 

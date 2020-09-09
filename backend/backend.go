@@ -9,7 +9,7 @@ import (
 type Backend interface {
 	BackendExport() (PropertyCollection, bool, error)
 	BackendImport(clear bool) (PropertyCollection, bool, error)
-	BackendClear() (bool, error)
+	BackendReset() (bool, error)
 	Del(key string) (bool, error)
 	Exists(key string) (bool, error)
 	NamespaceExists(namespace string) (bool, error)

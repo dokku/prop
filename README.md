@@ -96,7 +96,7 @@ When migrating a backend, it is assumed that there are is no concurrent access t
 #### `backend reset`
 
 - Description: Clear all values in a backend
-- Method Signature: `func (b Backend) BackendClear() (success bool, err error)`
+- Method Signature: `func (b Backend) BackendReset() (success bool, err error)`
 
 ### `config` commands
 
@@ -284,7 +284,7 @@ Backends should implement the method signatures specified for each command. The 
 type Backend interface {
   BackendExport() (PropertyCollection, bool, error)
   BackendImport(clear bool) (PropertyCollection, bool, error)
-  BackendClear() (bool, error)
+  BackendReset() (bool, error)
   Del(key string) (bool, error)
   Exists(key string) (bool, error)
   NamespaceExists(namespace string) (bool, error)

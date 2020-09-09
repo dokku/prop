@@ -20,7 +20,7 @@ func (backend UnimplementedBackend) BackendImport(clear bool) (PropertyCollectio
 	return PropertyCollection{}, false, fmt.Errorf("Not implemented")
 }
 
-func (backend UnimplementedBackend) BackendClear() (bool, error) {
+func (backend UnimplementedBackend) BackendReset() (bool, error) {
 	return false, fmt.Errorf("Not implemented")
 }
 
