@@ -101,8 +101,16 @@ func (c *GetAllCommand) Run(args []string) int {
 		return 1
 	}
 
+	var kv []string
 	for key, value := range keyValuePairs {
-		c.Ui.Output(fmt.Sprintf("%s: %s", key, value))
+		kv = append(kv, fmt.Sprintf("%v | %v", key, value))
 	}
+
+	if len(kv) == 0 {
+		return 0
+	}
+
+	c.Ui.Output(formatKV(kv))
+
 	return 0
 }
