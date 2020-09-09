@@ -35,6 +35,10 @@ func Commands(metaPtr *Meta, agentUi cli.Ui) map[string]cli.CommandFactory {
 
 	all := map[string]cli.CommandFactory{}
 
+	for k, v := range BackendCommands(meta) {
+		all[k] = v
+	}
+
 	for k, v := range KeyValueCommands(meta) {
 		all[k] = v
 	}
@@ -48,6 +52,23 @@ func Commands(metaPtr *Meta, agentUi cli.Ui) map[string]cli.CommandFactory {
 	}
 
 	return all
+}
+
+func BackendCommands(meta Meta) map[string]cli.CommandFactory {
+	return map[string]cli.CommandFactory{
+		"backend export": func() (cli.Command, error) {
+			// backend export path/to/file
+			return &BackendExportCommand{Meta: meta}, nil
+		},
+		"backend import": func() (cli.Command, error) {
+			// backend import path/to/file
+			return &BackendImportCommand{}, nil
+		},
+		"backend reset": func() (cli.Command, error) {
+			// backend reset
+			return &BackendResetCommand{}, nil
+		},
+	}
 }
 
 func KeyValueCommands(meta Meta) map[string]cli.CommandFactory {

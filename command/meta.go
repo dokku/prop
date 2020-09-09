@@ -1,7 +1,6 @@
 package command
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -137,9 +136,4 @@ func flagString(flags *flag.FlagSet) string {
 		flagString = append(flagString, fmt.Sprintf("--%s <%[1]s-value>", f.Name))
 	})
 	return strings.Join(flagString, " ")
-}
-
-func prettyPrint(i interface{}) string {
-	s, _ := json.MarshalIndent(i, "", "\t")
-	return string(s)
 }

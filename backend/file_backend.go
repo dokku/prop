@@ -32,12 +32,12 @@ func NewUnstructuredFileBackend(namespace string, url *dburl.URL) (UnstructuredF
 	return backend, nil
 }
 
-func (backend UnstructuredFileBackend) BackendExport() (PropertyCollection, bool, error) {
-	return PropertyCollection{}, false, fmt.Errorf("Not implemented")
+func (backend UnstructuredFileBackend) BackendExport() (PropertyCollection, error) {
+	return PropertyCollection{}, fmt.Errorf("Not implemented")
 }
 
-func (backend UnstructuredFileBackend) BackendImport(clear bool) (PropertyCollection, bool, error) {
-	return PropertyCollection{}, false, fmt.Errorf("Not implemented")
+func (backend UnstructuredFileBackend) BackendImport(p PropertyCollection, clear bool) (bool, error) {
+	return false, fmt.Errorf("Not implemented")
 }
 
 func (backend UnstructuredFileBackend) BackendReset() (bool, error) {

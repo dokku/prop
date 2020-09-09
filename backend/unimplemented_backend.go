@@ -12,12 +12,12 @@ func NewUnimplementedBackend() (UnimplementedBackend, error) {
 	return UnimplementedBackend{}, nil
 }
 
-func (backend UnimplementedBackend) BackendExport() (PropertyCollection, bool, error) {
-	return PropertyCollection{}, false, fmt.Errorf("Not implemented")
+func (backend UnimplementedBackend) BackendExport() (PropertyCollection, error) {
+	return PropertyCollection{}, fmt.Errorf("Not implemented")
 }
 
-func (backend UnimplementedBackend) BackendImport(clear bool) (PropertyCollection, bool, error) {
-	return PropertyCollection{}, false, fmt.Errorf("Not implemented")
+func (backend UnimplementedBackend) BackendImport(p PropertyCollection, clear bool) (bool, error) {
+	return false, fmt.Errorf("Not implemented")
 }
 
 func (backend UnimplementedBackend) BackendReset() (bool, error) {

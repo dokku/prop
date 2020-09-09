@@ -3,6 +3,7 @@ package command
 import (
 	"bufio"
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"strings"
@@ -401,4 +402,9 @@ func (w *uiErrorWriter) Close() error {
 		w.buf.Reset()
 	}
 	return nil
+}
+
+func prettyPrint(i interface{}) string {
+	s, _ := json.MarshalIndent(i, "", "\t")
+	return string(s)
 }

@@ -4,7 +4,7 @@ type Property struct {
 	DataType  string
 	Namespace string
 	Key       string
-	Value     string
+	Value     interface{}
 }
 
 type PropertyCollection struct {

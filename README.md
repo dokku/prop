@@ -77,21 +77,12 @@ When export a backend, it is assumed that there are is no concurrent access to t
 #### `backend import path/to/file`
 
 - Description: Import a backend to a json file
-- Method Signature: `func (b Backend) BackendImport(clear bool) (p PropertyCollection, imported bool, err error)`
+- Method Signature: `func (b Backend) BackendImport(p PropertyCollection, clear bool) (imported bool, err error)`
 - Flags: `--clear`
 
 When importing a backend, properties are merged into the existing backend unless the `--clear` flag is specified.
 
 When migrating a backend, it is assumed that there are is no concurrent access to the backend. In other words, if another process is changing values of the backend, then the import may result in an invalid state.
-
-#### `backend migrate target_backend_dsn`
-
-- Description: Migrate from one backend to another
-- Flags: `--clear`
-
-When migrating a backend, properties are merged into the target backend unless the `--clear` flag is specified.
-
-When migrating a backend, it is assumed that there are is no concurrent access to either backend. In other words, if another process is changing values of either backend, then the migration may result in an invalid state.
 
 #### `backend reset`
 
@@ -282,8 +273,8 @@ Backends should implement the method signatures specified for each command. The 
 
 ```go
 type Backend interface {
-  BackendExport() (PropertyCollection, bool, error)
-  BackendImport(clear bool) (PropertyCollection, bool, error)
+  BackendExport() (PropertyCollection, error)
+  BackendImport(p PropertyCollection, clear bool) (bool, error)
   BackendReset() (bool, error)
   Del(key string) (bool, error)
   Exists(key string) (bool, error)
