@@ -10,5 +10,5 @@ require (
 	github.com/posener/complete v1.2.3
 	github.com/ryanuber/columnize v2.1.2+incompatible
 	github.com/xo/dburl v0.16.0
-	golang.org/x/crypto v0.12.0
+	golang.org/x/crypto v0.13.0
 )
