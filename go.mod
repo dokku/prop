@@ -9,6 +9,6 @@ require (
 	github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db
 	github.com/posener/complete v1.2.3
 	github.com/ryanuber/columnize v2.1.2+incompatible
-	github.com/xo/dburl v0.16.0
+	github.com/xo/dburl v0.18.2
 	golang.org/x/crypto v0.14.0
 )
