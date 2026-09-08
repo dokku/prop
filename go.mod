@@ -1,6 +1,6 @@
 module github.com/dokku/prop
 
-go 1.25.0
+go 1.26.0
 
 require (
 	github.com/kr/text v0.2.0
@@ -10,7 +10,7 @@ require (
 	github.com/posener/complete v1.2.3
 	github.com/ryanuber/columnize v2.1.2+incompatible
 	github.com/xo/dburl v0.24.2
-	golang.org/x/crypto v0.55.0
+	golang.org/x/crypto v0.56.0
 )
 
 require (
